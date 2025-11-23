@@ -40,21 +40,21 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script>
-        // Configura Firebase aquí
+        // Configura Firebase con tus datos reales
         const firebaseConfig = {
             apiKey: "TU_API_KEY",
-            authDomain: "TU_PROYECTO.firebaseapp.com",
-            databaseURL: "TU_DATABASE_URL",
-            projectId: "TU_PROYECTO",
-            storageBucket: "TU_PROYECTO.appspot.com",
+            authDomain: "pgps-252ee.firebaseapp.com",
+            databaseURL: "https://pgps-252ee-default-rtdb.firebaseio.com/",
+            projectId: "pgps-252ee",
+            storageBucket: "pgps-252ee.appspot.com",
             messagingSenderId: "TU_SENDER_ID",
             appId: "TU_APP_ID"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Inicializa mapa
-        const map = L.map('map').setView([0,0], 13);
+        // Inicializa mapa centrado en Ciudad de México
+        const map = L.map('map').setView([19.4326, -99.1332], 12);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap &copy; CARTO',
             subdomains: 'abcd',
@@ -70,12 +70,14 @@
             db.ref('ubicacion/' + busID).on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (!data) return;
-                const { lat, lng, ruta } = data;
+
+                const { lat, lng } = data;
+
                 if (!marker) {
-                    marker = L.marker([lat, lng]).addTo(map).bindPopup(`Ruta: ${ruta}`);
+                    marker = L.marker([lat, lng]).addTo(map);
                     map.setView([lat, lng], 15);
                 } else {
-                    marker.setLatLng([lat, lng]).bindPopup(`Ruta: ${ruta}`);
+                    marker.setLatLng([lat, lng]);
                 }
             });
             alert("Conectado al autobús: " + busID);
@@ -83,4 +85,3 @@
     </script>
 </body>
 </html>
-
