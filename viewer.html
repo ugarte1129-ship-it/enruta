@@ -64,7 +64,9 @@
         let marker;
 
         function connectBus() {
-            const busID = document.getElementById('busID').value;
+            const busID = document.getElementById('busID').value.trim();
+            if (!busID) { alert("Ingresa un ID válido"); return; }
+
             db.ref('ubicacion/' + busID).on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (!data) return;
@@ -81,3 +83,4 @@
     </script>
 </body>
 </html>
+
